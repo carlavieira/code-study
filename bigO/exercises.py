@@ -99,4 +99,35 @@ def sqrt2(n):
     return -1
 
 
-# VI.7
+# VI.7 If the binary search tree is not balanced, we maybe need to pass through all the nodes. So, if there is n nodes,
+# it will be O(n)
+
+
+# VI.8 If the tree is not a binary search tree, we will need to pass through all the nodes. So, if there is n nodes,
+# it will be O(n)
+
+
+# VI.9 - If the array has n elements, it will run the loof in 113-114 n times. For each time, it will call appendToNew
+# fuction that will run n times also. So, it will be O(n^2).
+def copyArray(array):
+    copy = []
+    for value in array:
+        copy = appendToNew(array, value)
+    return copy
+
+
+def appendToNew(array, value):
+    bigger = []
+    for i in range(0, len(array)):
+        bigger.append(array[i])
+    bigger[len(bigger) - 1] = value
+    return bigger
+
+
+# VI.10 - It will run log10(n) times, so it is O(log10(n))
+def sumDigits(n):
+    sum = 0
+    while n > 0:
+        sum += n % 10
+        n = n // 10
+    return sum
