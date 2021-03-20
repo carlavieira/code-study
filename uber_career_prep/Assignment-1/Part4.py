@@ -38,6 +38,7 @@ Bonus
 Implement a function to check if a linked list is a palindrome.
 
 """
+from math import ceil, floor
 
 class Node:
     def __init__(self, value, next=None):
@@ -117,6 +118,7 @@ class SinglyLinkedList:
         return pointer
 
     def sizeN(self):
+        if not self.head: return 0
         counter = 0
         mark = self.cycleMark() if self.hasCycle() else None
         pointer = self.head
@@ -135,10 +137,13 @@ class SinglyLinkedList:
         return self.size
 
     def printList(self):
+        print("Linked List: [ ", end="")
+        if self.size == 0:
+            print("]")
+            return
         mark = self.cycleMark() if self.hasCycle() else None
         pointer = self.head
         is_first_time = True
-        print("Linked List: [ ", end="")
         while pointer:
             if pointer == mark:
                 if is_first_time:
@@ -174,16 +179,19 @@ class SinglyLinkedList:
 
     def isPalindrome(self):
         mark = self.cycleMark() if self.hasCycle() else None
-        pointer1, pointer2, pointer_runner = self.head
-        first_half, second_half = []
-        while pointer_runner != mark:
-            first_half.append(pointer1.value)
-            pointer1 = pointer1.next
-            pointer_runner = pointer_runner.next.next
-        while pointer2 != mark:
-            second_half.append(pointer2.value)
-            pointer2 = pointer2.next
-        return first_half == second_half[::-1]
+        pointer = self.head
+        list_values = []
+        is_first_time = True
+        while pointer:
+            if pointer == mark:
+                if is_first_time:
+                    is_first_time = False
+                else:
+                    break
+            list_values.append(pointer.value)
+            pointer = pointer.next
+        print(list_values[:len(list_values)//2], list_values[len(list_values):ceil(len(list_values)/2)-1:-1])
+        return list_values[:len(list_values)//2] == list_values[len(list_values):ceil(len(list_values)/2)-1:-1]
 
 myLList = SinglyLinkedList()
 myLList.push(Node(1))
@@ -204,3 +212,32 @@ myLList.push(Node(4, myLList.head))
 myLList.printList()
 myLList.insert(1, Node(3))
 myLList.printList()
+print(myLList.pop().value)
+print(myLList.pop().value)
+print(myLList.pop().value)
+print(myLList.pop().value)
+myLList.printList()
+print(myLList.sizeN())
+
+myLList.push(Node(1))
+myLList.push(Node(2))
+myLList.push(Node(3))
+myLList.push(Node(4))
+myLList.printList()
+myLList.push(Node(5, myLList.elemntAt(3)))
+myLList.printList()
+
+myLList.push(Node(6))
+myLList.printList()
+print(myLList.sizeN())
+print(myLList.size1())
+print(myLList.isPalindrome())
+pal = SinglyLinkedList()
+pal.push(Node("a"))
+pal.push(Node("b"))
+pal.push(Node("c"))
+pal.push(Node("b"))
+pal.push(Node("a"))
+print("test")
+pal.printList()
+print(pal.isPalindrome())
