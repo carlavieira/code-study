@@ -29,7 +29,7 @@ class TestPart3(unittest.TestCase):
         self.assertEqual(myStack.size1(), 0)
         self.assertTrue(myStack.isEmpty(), True)
         myStack.push(42)
-        myStack.push("carla")
+        self.assertRaises(TypeError, myStack.push, "carla")
         myStack.pop()
         myStack.push("carla")
         myStack.push("maria")
@@ -60,9 +60,7 @@ class TestPart4(unittest.TestCase):
         myLList.push(Node(2))
         self.assertEqual(myLList.sizeN(), 2)
         self.assertEqual(myLList.size1(), 2)
-        myLList.printList()
         myLList.push(Node(3, myLList.head))
-        print(myLList.sizeN())
         self.assertEqual(myLList.sizeN(), 3)
         self.assertEqual(myLList.size1(), 3)
 

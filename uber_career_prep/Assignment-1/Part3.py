@@ -14,14 +14,10 @@ class Stack:
             self.top_node = Node(value)
             self._min = value
         else:
-            try:
-                if value < self._min:
-                     self._min = value
-            except TypeError:
-                print(f"Invalid input. Empty the stack first or add an object {type(self.top_node.value)}")
-                return
-            else:
-                self.top_node = Node(value, self.top_node)
+            if type(value) != type(self._min): raise TypeError(f"Invalid input. Empty the stack first or add an object {type(self.top_node.value)}")
+            if value < self._min:
+                self._min = value
+            self.top_node = Node(value, self.top_node)
         self.size += 1
 
     def pop(self):
