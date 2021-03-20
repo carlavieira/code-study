@@ -8,7 +8,7 @@ a link) to the next node in the sequence. This structure allows for efficient in
 any position in the sequence during iteration.
 
 Implement a Singly Linked List class with the following methods:
-* void push(<Node> node) → Adds the node to the end othe list
+* void push(<Node> node) → Adds the node to the end of the list
 * <Node> pop() → Removes the last node at the end of the linked list, returns that data
 * void insert(uint index,<Node> node) → Adds a single node containing data to a chosen location in the list. If the
 index is above the size of the list, do nothing
@@ -39,13 +39,168 @@ Implement a function to check if a linked list is a palindrome.
 
 """
 
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
 class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.size = 0
 
-    class Node:
-        def __init__(self, value, next=None):
-            self.value = value
-            self.next = next
+    def push(self, node: Node):
+        if not self.head: self.head = node
+        else:
+            mark = self.cycleMark() if self.hasCycle() else None
+            pointer = self.head
+            is_first_time = True
+            while pointer.next:
+                if pointer.next == mark:
+                    if is_first_time:
+                        is_first_time = False
+                    else:
+                        break
+                pointer = pointer.next
+            pointer.next = node
+        self.size += 1
 
-    def __index__(self):
-        self.top=None
+    def pop(self):
+        if not self.head: raise Exception("Empty Linked List")
+        mark = self.cycleMark() if self.hasCycle() else None
+        pointer = self.head
+        if pointer.next == mark:
+            delete_node = self.head
+            self.head = None
+        else:
+            is_first_time = True
+            while pointer:
+                if pointer.next == mark:
+                    if is_first_time:
+                        is_first_time = False
+                    else:
+                        break
+                previous_node = pointer
+                pointer = pointer.next
+            delete_node = pointer
+            previous_node.next = mark
+        self.size -= 1
+        return delete_node
 
+
+    def insert(self, index: int, node: Node):
+        if index > self.size-1 or index < 0: return
+        pointer = self.head
+        for x in range(index-1):
+            pointer = pointer.next
+        node.next = pointer.next
+        pointer.next = node
+        self.size += 1
+
+    def remove(self, index: int):
+        if index > self.size-1 or index < 0: return
+        pointer = self.head
+        if index == 0:
+            self.head = self.head.next
+        else:
+            for x in range(index):
+                previous_node = pointer
+                pointer = pointer.next
+            previous_node.next = pointer.next
+        self.size -= 1
+
+    def elemntAt(self, index: int):
+        if index > self.size-1 or index < 0: None
+        pointer = self.head
+        for x in range(index):
+            pointer = pointer.next
+        return pointer
+
+    def sizeN(self):
+        counter = 0
+        mark = self.cycleMark() if self.hasCycle() else None
+        pointer = self.head
+        is_first_time = True
+        while pointer:
+            if pointer == mark:
+                if is_first_time:
+                    is_first_time = False
+                else:
+                    break
+            counter += 1
+            pointer = pointer.next
+        return counter
+
+    def size1(self):
+        return self.size
+
+    def printList(self):
+        mark = self.cycleMark() if self.hasCycle() else None
+        pointer = self.head
+        is_first_time = True
+        print("Linked List: [ ", end="")
+        while pointer:
+            if pointer == mark:
+                if is_first_time:
+                    is_first_time = False
+                else:
+                    break
+            print(pointer.value, end=" -> ")
+            pointer = pointer.next
+        print(pointer.value if pointer else None, end="")
+        print(" ]")
+
+    def hasCycle(self):
+        if not self.head: raise Exception("Empty Linked List")
+        set_nodes = set()
+        pointer = self.head
+        while pointer:
+            if pointer in set_nodes:
+                return True
+            set_nodes.add(pointer)
+            pointer = pointer.next
+        return False
+
+    def cycleMark(self):
+        if not self.head: raise Exception("Empty Linked List")
+        set_nodes = set()
+        pointer = self.head
+        while pointer:
+            if pointer in set_nodes:
+                return pointer
+            set_nodes.add(pointer)
+            pointer = pointer.next
+        return None
+
+    def isPalindrome(self):
+        mark = self.cycleMark() if self.hasCycle() else None
+        pointer1, pointer2, pointer_runner = self.head
+        first_half, second_half = []
+        while pointer_runner != mark:
+            first_half.append(pointer1.value)
+            pointer1 = pointer1.next
+            pointer_runner = pointer_runner.next.next
+        while pointer2 != mark:
+            second_half.append(pointer2.value)
+            pointer2 = pointer2.next
+        return first_half == second_half[::-1]
+
+myLList = SinglyLinkedList()
+myLList.push(Node(1))
+myLList.push(Node(2))
+myLList.printList()
+myLList.push(Node(3, myLList.head))
+print(myLList.sizeN())
+myLList.printList()
+myLList.push(Node(4, myLList.head))
+myLList.printList()
+myLList.pop()
+myLList.printList()
+print(myLList.elemntAt(2).value)
+print(myLList.sizeN())
+myLList.remove(2)
+myLList.printList()
+myLList.push(Node(4, myLList.head))
+myLList.printList()
+myLList.insert(1, Node(3))
+myLList.printList()

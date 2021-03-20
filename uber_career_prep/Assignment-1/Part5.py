@@ -14,3 +14,29 @@ Leaning on our knowledge of stacks, can you think of a way to utilize a stack to
 Read up on recursion, and then apply that knowledge to come up with another version of this algorithm.
 
 """
+from Part4 import *
+
+def reverseLinkedListIterative(linkedList: SinglyLinkedList):
+    newLinkedList =  SinglyLinkedList()
+    pointer = linkedList.head
+    reverseList = []
+    while pointer:
+        reverseList.append(pointer.value)
+        pointer = pointer.next
+    for x in reverseList:
+        newLinkedList.push(Node(x))
+    return newLinkedList
+
+def reverseLinkedListStack(linkedList: SinglyLinkedList):
+    newLinkedList =  SinglyLinkedList()
+    pointer = linkedList.head
+    reverseList = []
+    while pointer:
+        reverseList.append(pointer.value)
+        pointer = pointer.next
+    for x in reverseList:
+        newLinkedList.push(Node(x))
+    return newLinkedList
+
+def reverseLinkedListRecursive(linkedList: SinglyLinkedList):
+    pass
