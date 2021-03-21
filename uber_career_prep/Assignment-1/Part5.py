@@ -1,42 +1,51 @@
-"""
-Part 5: Reverse a Linked List
-
-Implement reverseLinkedList() which takes in a linked list and returns a new linked list with the same elements in
-reverse order. For example, if the representation of your Linked List is “1, 2, 3, 4”, then reversing it would return
-“4, 3, 2, 1”.
-We have identified three main methodologies for achieving this solution, and we want to challenge you to build all
-three:
-    1) Iteratively
-In this context, “iteratively” means “looping through the data set”. Therefore, our solution should have a time complexity of O(n) and a space complexity of O(1).
-    2) Using a stack
-Leaning on our knowledge of stacks, can you think of a way to utilize a stack to solve this problem with a time complexity of O(n)?
-    3) Recursively
-Read up on recursion, and then apply that knowledge to come up with another version of this algorithm.
-
-"""
 from Part4 import *
 
 def reverseLinkedListIterative(linkedList: SinglyLinkedList):
-    newLinkedList =  SinglyLinkedList()
     pointer = linkedList.head
-    reverseList = []
+    previous_node = None
     while pointer:
-        reverseList.append(pointer.value)
-        pointer = pointer.next
-    for x in reverseList:
-        newLinkedList.push(Node(x))
-    return newLinkedList
+        posterior_node = pointer.next
+        pointer.next = previous_node
+        previous_node = pointer
+        pointer = posterior_node
+    linkedList.head = previous_node
+    return linkedList
 
 def reverseLinkedListStack(linkedList: SinglyLinkedList):
     newLinkedList =  SinglyLinkedList()
     pointer = linkedList.head
-    reverseList = []
+    aux_list = []
     while pointer:
-        reverseList.append(pointer.value)
+        aux_list.append(pointer.value)
         pointer = pointer.next
-    for x in reverseList:
-        newLinkedList.push(Node(x))
+    while aux_list:
+        newLinkedList.push(Node(aux_list.pop()))
     return newLinkedList
 
 def reverseLinkedListRecursive(linkedList: SinglyLinkedList):
-    pass
+    if linkedList.head == None: return SinglyLinkedList()
+    if linkedList.head.next == None:
+        llist = SinglyLinkedList()
+        llist.push(Node(linkedList.head.value))
+        return llist
+    templlist = SinglyLinkedList()
+    templlist.head = linkedList.head.next
+    llist = reverseLinkedListRecursive(templlist)
+    llist.push(Node(linkedList.head.value))
+    return llist
+
+'''                 
+Complexity Analysis:
+
+Time Complexity:
+  reverseLinkedListIterative(): O(n)      
+  reverseLinkedListStack(): O(n) 
+  reverseLinkedListRecursive(): O(n)
+
+Space Complexity:
+  reverseLinkedListIterative(): O(1)      
+  reverseLinkedListStack(): O(n) 
+  reverseLinkedListRecursive(): O(n)     
+      
+
+'''

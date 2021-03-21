@@ -25,6 +25,7 @@ class Stack:
         aux = self.top_node.value
         self.top_node = self.top_node.next
         self.size -= 1
+        if aux == self._min: self.checkmin()
         return aux
 
     def top(self):
@@ -47,13 +48,24 @@ class Stack:
 
     def min(self):
          if self.isEmpty(): raise Exception("Empty Stack")
+         if type(self.top_node.value) != int: raise TypeError("Not an integers list")
          return self._min
+
+    def checkmin(self):
+        if not self.top_node:
+            self._min = None
+            return
+        self._min = self.top_node.value
+        pointer = self.top_node.next
+        while pointer:
+            if pointer.value < self._min: self._min = pointer.value
+            pointer = pointer.next
 
 
 '''
 Complexity analysis:
   push(): O(1)
-  pop(): O(1) 
+  pop(): O(1) (with min() -> O(n))
   top(): O(1) 
   isEmpty(): O(1) 
   sizeN(): O(n)
