@@ -33,3 +33,5 @@ def recursive_binary_search(arr, string, first, last):
 
 arr=['at', '', '', '', 'ball', '', '', 'car', '', '', 'dad', '', '']
 print(sparse_search(arr, "ball"))
+print(sparse_search(arr, "at"))
+print(sparse_search(arr, "dad"))
