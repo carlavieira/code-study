@@ -1,1 +1,1 @@
-def
+def minimal_tree(arr_int)

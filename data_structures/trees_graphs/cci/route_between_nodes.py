@@ -9,10 +9,11 @@ class Node:
     def __init__(self, name, children=[]):
         self.name = name
         self.children = children
+        self.marked = False
         self.marked_start = False
         self.marked_end = False
 
-def route_between_nodes(node_start, node_end) -> bool:
+def route_between_nodes_bfs(node_start, node_end) -> bool:
     nodes_queue = deque()
     node_start.marked_start = True
     nodes_queue.append(node_start)
@@ -48,6 +49,17 @@ def route_between_nodes_undirected(node_start, node_end) -> bool:
                 queue_end.append(child)
     return False
 
+def route_between_nodes_dfs(node_start, node_end):
+    if node_start == node_end:
+        return True
+    node_start.marked = True
+    for child in node_start.children:
+        if not child.marked:
+            found = route_between_nodes_dfs(child, node_end)
+            if found:
+                return True
+    return False
+
 node1 = Node(1)
 node2 = Node(2)
 node3 = Node(3)
@@ -60,4 +72,9 @@ node1.children = [node2, node3]
 node3.children = [node4]
 node4.children = [node5, node6]
 node6.children = [node7]
-print(route_between_nodes(node1, node7))
+
+graph = [node1, node2, node3, node4, node5, node6, node7]
+for node in graph:
+    node.marked = False
+print(route_between_nodes_bfs(node1, node7))
+print(route_between_nodes_dfs(node1, node7))
